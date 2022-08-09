@@ -1,5 +1,5 @@
 // symbol_finder.cpp
-// will use the nm tool to search the current working directory for a symbol
+// will use the nm tool to search all files in the current working directory for a symbol
 // to compile: g++ symbol_finder.cpp -o symbol_finder -std=c++17
 // freely distribute under copypasta license
 
@@ -17,17 +17,17 @@
 
 // copied from https://stackoverflow.com/a/478960/983556
 std::string exec(const char* cmd) {
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+	std::array<char, 128> buffer;
+	std::string result;
+	std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
 
 	if (!pipe) {
-        throw std::runtime_error("popen() failed!");
-    }
+		throw std::runtime_error("popen() failed!");
+	}
 
 	while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-        result += buffer.data();
-    }
+		result += buffer.data();
+	}
 
 	return result;
 }
@@ -46,10 +46,7 @@ std::vector<std::string> split(std::string input, char delimiter) {
 
 template<typename Container>
 bool contains(const Container& cont, const std::string& s) {
-	return std::search(cont.begin(),
-					   cont.end(),
-					   s.begin(),
-					   s.end()) != cont.end();
+	return std::search(cont.begin(), cont.end(), s.begin(), s.end()) != cont.end();
 }
 
 std::vector<std::string> output_contains(std::vector<std::string> output, std::string search) {
