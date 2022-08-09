@@ -11,5 +11,5 @@ make
 ### Usage
 ```
 cd /path/to/libs/
-/path/to/symbol_finder/symbol_finder (--demangle)
+/path/to/symbol_finder/symbol_finder your_search_term (--demangle)
 ```
