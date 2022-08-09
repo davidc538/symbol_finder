@@ -7,3 +7,9 @@
 cd symbol_finder
 make
 ```
+
+### Usage
+```
+cd /path/to/libs/
+/path/to/symbol_finder/symbol_finder (--demangle)
+```
