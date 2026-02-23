@@ -12,7 +12,6 @@
 #include <vector>
 #include <sstream>
 #include <filesystem>
-#include <algorithm>
 #include <functional>
 
 // copied from https://stackoverflow.com/a/478960/983556
@@ -44,16 +43,16 @@ std::vector<std::string> split(std::string input, char delimiter) {
 	return ret;
 }
 
-template<typename Container>
-bool contains(const Container& cont, const std::string& s) {
-	return std::search(cont.begin(), cont.end(), s.begin(), s.end()) != cont.end();
+bool contains(std::string_view haystack, std::string_view needle) {
+	bool ret = (haystack.find(needle) != std::string_view::npos);
+	return ret;
 }
 
 std::vector<std::string> output_contains(std::vector<std::string> output, std::string search) {
 	std::vector<std::string> ret;
 	for (const std::string& str : output) {
 		bool cont = contains(str, search);
-		
+
 		if (cont)
 			ret.push_back(str);
 	}
@@ -99,7 +98,6 @@ struct nm_options {
 };
 
 void search_cwd(const nm_options& options, std::string target, std::function<void(std::string, std::string)> on_found) {
-	namespace fs = std::filesystem;
 	std::string path = std::filesystem::current_path();
 	for (const auto& entry : std::filesystem::directory_iterator(path)) {
 		std::stringstream ss;
@@ -131,6 +129,7 @@ int main(int argc, char** argv) {
 	}
 
 	std::string search = argv[1];
+	std::cout << "search term: " << search << std::endl;
 	search_cwd(options, search, [](std::string filename, std::string symbol) {
 		filename = trim(filename, '\"');
 
